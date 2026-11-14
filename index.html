@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>My Habits</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#fff6ec;--card:#ffffff;--text:#2a2140;--muted:#7d7396;--line:#f0e4d6;
+  --brand:#ff6b4a;--brand2:#ffb703;--ok:#18b67a;
+  --shadow:0 10px 28px rgba(255,107,74,.13);color-scheme:light;
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#16121f;--card:#221c31;--text:#f6f0ff;--muted:#a99fc4;--line:#352c4a;
+    --brand:#ff8266;--brand2:#ffc93c;--ok:#3de0a0;
+    --shadow:0 10px 28px rgba(0,0,0,.45);color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#16121f;--card:#221c31;--text:#f6f0ff;--muted:#a99fc4;--line:#352c4a;
+  --brand:#ff8266;--brand2:#ffc93c;--ok:#3de0a0;
+  --shadow:0 10px 28px rgba(0,0,0,.45);color-scheme:dark;
+}
+*{box-sizing:border-box;margin:0}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{background:var(--bg);color:var(--text);font-family:'Manrope',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;min-height:100vh;transition:background .3s,color .3s}
+.wrap{max-width:720px;margin:0 auto;padding:20px 16px 48px}
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+h1{font-size:1.5rem;font-weight:800}
+.sub{color:var(--muted);font-size:.85rem;margin-top:2px}
+.theme{width:46px;height:46px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--text);font-size:1.3rem;cursor:pointer;box-shadow:var(--shadow)}
+.hero{display:flex;align-items:center;gap:18px;padding:20px;border-radius:24px;color:#fff;background:linear-gradient(135deg,#ff6b4a 0%,#ff4f8b 50%,#9b5cff 100%);box-shadow:var(--shadow);margin-bottom:16px}
+.ring{position:relative;width:96px;height:96px;flex:none}
+.ring svg{transform:rotate(-90deg)}
+.ring .pct{position:absolute;inset:0;display:grid;place-items:center;font-weight:800;font-size:1.25rem}
+.hero b{font-size:1.2rem;display:block}
+.hero p{opacity:.9;font-size:.88rem;margin-top:4px}
+.card{background:var(--card);border-radius:20px;padding:16px;box-shadow:var(--shadow);border:1px solid var(--line);margin-bottom:12px}
+.top{display:flex;align-items:center;gap:12px}
+.chk{width:48px;height:48px;border-radius:16px;border:2.5px solid var(--c);background:transparent;font-size:1.4rem;cursor:pointer;display:grid;place-items:center;flex:none;transition:transform .15s,background .2s}
+.chk:active{transform:scale(.9)}
+.card.done .chk{background:var(--c)}
+.card.done .nm{text-decoration:line-through;opacity:.6}
+.info{flex:1;min-width:0}
+.nm{font-weight:800;font-size:1rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.streak{font-size:.8rem;color:var(--muted);margin-top:2px}
+.del{border:0;background:none;color:var(--muted);cursor:pointer;font-size:1rem;padding:8px}
+.week{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:12px}
+.day{border:0;background:var(--bg);border-radius:10px;padding:6px 0;text-align:center;font:inherit;font-size:.7rem;color:var(--muted);cursor:pointer}
+.day i{display:block;width:16px;height:16px;border-radius:50%;margin:4px auto 0;border:2px solid var(--line);font-style:normal;font-size:.6rem;line-height:12px;color:#fff}
+.day.on i{background:var(--c);border-color:var(--c)}
+.day.today{outline:2px solid var(--c);outline-offset:-2px}
+.add h2{font-size:1rem;font-weight:800;margin-bottom:10px}
+.sugg{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.sugg button{border:1px solid var(--line);background:var(--bg);color:var(--text);padding:7px 12px;border-radius:99px;font:inherit;font-size:.82rem;font-weight:600;cursor:pointer}
+.form{display:grid;grid-template-columns:70px 1fr;gap:8px}
+input{width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--text);font:inherit}
+input:focus,button:focus-visible{outline:2px solid var(--brand);outline-offset:1px}
+#emoji{text-align:center;font-size:1.3rem;padding:8px}
+.colors{display:flex;gap:10px;margin:12px 0}
+.colors button{width:30px;height:30px;border-radius:50%;border:3px solid transparent;background:var(--c);cursor:pointer}
+.colors button.on{border-color:var(--text)}
+.btn{width:100%;padding:13px;border:0;border-radius:14px;font:inherit;font-weight:800;color:#fff;cursor:pointer;background:linear-gradient(90deg,var(--brand),#ff4f8b)}
+.btn:active{transform:scale(.98)}
+.empty{text-align:center;color:var(--muted);padding:26px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>🌱 My Habits</h1>
+      <div class="sub" id="today"></div>
+    </div>
+    <button class="theme" id="theme" aria-label="Tungi rejimni almashtirish">🌙</button>
+  </header>
+
+  <section class="hero">
+    <div class="ring">
+      <svg width="96" height="96" viewBox="0 0 96 96">
+        <circle cx="48" cy="48" r="40" fill="none" stroke="rgba(255,255,255,.28)" stroke-width="10"/>
+        <circle id="arc" cx="48" cy="48" r="40" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round" stroke-dasharray="251" stroke-dashoffset="251" style="transition:stroke-dashoffset .6s"/>
+      </svg>
+      <div class="pct" id="pct">0%</div>
+    </div>
+    <div><b id="hTitle">Bugun</b><p id="hText"></p></div>
+  </section>
+
+  <div id="list"></div>
+
+  <section class="card add">
+    <h2>Yangi odat qo’shish</h2>
+    <div class="sugg" id="sugg"></div>
+    <div class="form">
+      <input id="emoji" value="⭐" maxlength="2" aria-label="Belgi">
+      <input id="name" type="text" maxlength="30" placeholder="Odat nomi, masalan: Kitob o’qish">
+    </div>
+    <div class="colors" id="colors"></div>
+    <button class="btn" id="add" type="button">Odat qo’shish</button>
+  </section>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const COLORS=['#ff6b4a','#18b67a','#3b82f6','#a855f7','#ec4899','#f59e0b'];
+const SUGG=[['📚','Kitob o’qish'],['🧹','Uy yig’ishtirish'],['💧','Suv ichish'],['🏃','Sport qilish'],['🛏️','O’rin yig’ish'],['🦷','Tish yuvish'],['📝','Dars qilish']];
+const DAYS=['Ya','Du','Se','Ch','Pa','Ju','Sh'];
+const MONTHS=['yanvar','fevral','mart','aprel','may','iyun','iyul','avgust','sentabr','oktabr','noyabr','dekabr'];
+const WEEKD=['Yakshanba','Dushanba','Seshanba','Chorshanba','Payshanba','Juma','Shanba'];
+
+let H=[{id:1,name:'Kitob o’qish',emoji:'📚',color:COLORS[2],done:{}},{id:2,name:'Uy yig’ishtirish',emoji:'🧹',color:COLORS[1],done:{}}];
+try{const r=localStorage.getItem('habits-data');if(r)H=JSON.parse(r)}catch(e){}
+function save(){try{localStorage.setItem('habits-data',JSON.stringify(H))}catch(e){}}
+
+const key=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const ago=n=>{const d=new Date();d.setDate(d.getDate()-n);return d};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function streak(h){
+  let n=0,i=h.done[key(ago(0))]?0:1;
+  while(h.done[key(ago(i))]){n++;i++}
+  return n;
+}
+
+/* Mavzu */
+function applyTheme(t){
+  document.documentElement.setAttribute('data-theme',t);
+  $('theme').textContent=t==='dark'?'☀️':'🌙';
+}
+function currentTheme(){
+  let t=null;try{t=localStorage.getItem('habits-theme')}catch(e){}
+  return t||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+}
+applyTheme(currentTheme());
+$('theme').onclick=()=>{
+  const n=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';
+  applyTheme(n);try{localStorage.setItem('habits-theme',n)}catch(e){}
+};
+
+/* Forma */
+let color=COLORS[0];
+$('colors').innerHTML=COLORS.map(c=>`<button type="button" style="--c:${c}" data-c="${c}" aria-label="Rang"></button>`).join('');
+function pickColor(c){color=c;document.querySelectorAll('#colors button').forEach(b=>b.classList.toggle('on',b.dataset.c===c))}
+document.querySelectorAll('#colors button').forEach(b=>b.onclick=()=>pickColor(b.dataset.c));
+pickColor(color);
+$('sugg').innerHTML=SUGG.map((s,i)=>`<button type="button" data-i="${i}">${s[0]} ${s[1]}</button>`).join('');
+document.querySelectorAll('#sugg button').forEach(b=>b.onclick=()=>{
+  const s=SUGG[+b.dataset.i];$('emoji').value=s[0];$('name').value=s[1];
+});
+$('add').onclick=()=>{
+  const name=$('name').value.trim();
+  if(!name){$('name').focus();return}
+  H.push({id:Date.now(),name,emoji:$('emoji').value||'⭐',color,done:{}});
+  $('name').value='';save();render();
+};
+
+function toggle(id,k){
+  const h=H.find(x=>x.id===id);
+  if(h.done[k])delete h.done[k];else h.done[k]=1;
+  save();render();
+}
+function del(id){
+  if(!confirm('Bu odat o’chirilsinmi?'))return;
+  H=H.filter(x=>x.id!==id);save();render();
+}
+
+function render(){
+  const now=new Date(),tk=key(now);
+  $('today').textContent=`${WEEKD[now.getDay()]}, ${now.getDate()}-${MONTHS[now.getMonth()]}`;
+
+  const total=H.length,done=H.filter(h=>h.done[tk]).length;
+  const pct=total?Math.round(done/total*100):0;
+  $('pct').textContent=pct+'%';
+  $('arc').style.strokeDashoffset=251-251*pct/100;
+  $('hTitle').textContent=!total?'Odat qo’shing':done===total?'Ajoyib kun! 🎉':'Bugungi reja';
+  $('hText').textContent=total?`${total} ta odatdan ${done} tasi bajarildi`:'Pastdan birinchi odatingizni qo’shing';
+
+  $('list').innerHTML=total?H.map(h=>{
+    const s=streak(h);
+    const week=[6,5,4,3,2,1,0].map(n=>{
+      const d=ago(n),k=key(d),on=h.done[k];
+      return `<button class="day${on?' on':''}${n===0?' today':''}" type="button" data-id="${h.id}" data-k="${k}" aria-label="${k}">${DAYS[d.getDay()]}<i>${on?'✓':''}</i></button>`;
+    }).join('');
+    return `<article class="card${h.done[tk]?' done':''}" style="--c:${h.color}">
+      <div class="top">
+        <button class="chk" type="button" data-id="${h.id}" data-k="${tk}" aria-label="Bugun bajarildi">${h.done[tk]?'✓':h.emoji}</button>
+        <div class="info"><div class="nm">${h.done[tk]?h.emoji+' ':''}${esc(h.name)}</div>
+        <div class="streak">${s?'🔥 '+s+' kun ketma-ket':'Bugun boshlang!'}</div></div>
+        <button class="del" type="button" data-del="${h.id}" aria-label="O’chirish">✕</button>
+      </div>
+      <div class="week">${week}</div>
+    </article>`;
+  }).join(''):'<div class="empty">Hozircha odat yo’q 🌤️</div>';
+
+  document.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>toggle(+b.dataset.id,b.dataset.k));
+  document.querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>del(+b.dataset.del));
+}
+render();
+</script>
+</body>
+</html>
